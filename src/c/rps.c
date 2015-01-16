@@ -1,13 +1,21 @@
 #include <assert.h>
 #include "rps.h"
+#include <string.h>
+#include <stdlib.h>
 
 /*
  rock = 0, paper = 1, scissors =2
  */
-const char* choices[] = {"rock", "paper", "scissors"};
+
+const RPSItem items[] = {
+    {.name = "rock", .id = 0},
+    {.name = "paper", .id = 1},
+    {.name = "scissors", .id = 2}
+};
+
 const int TRUE = 0;
 const int FALSE = 1;
-const int NUM_CHOICES = sizeof(choices)/sizeof(choices[0]);
+const int NUM_ITEMS = sizeof(items)/sizeof(items[0]);
 
 int rps_strcmp(const char* a, const char* b){
     // check if pointers are zero
@@ -30,16 +38,6 @@ int rps_strcmp(const char* a, const char* b){
     return -1;
 }
 
-int input_id(const char* input){
-    for(unsigned long i = 0; i < sizeof(choices) / sizeof(choices[0]); ++i){
-        if(rps_strcmp(input, choices[i]) == TRUE){
-            return i;
-        }
-    }
-
-    return -1;
-}
-
 // use const all the time because it signals that the function will not change the parameters
 // compiler will throw you errors if it will. So take advantage.
 int check_choices(const int* const c, const int csize){
@@ -54,30 +52,10 @@ int check_choices(const int* const c, const int csize){
 }
 
 
-RPS_Result rps_match(const char* p1_pick, const char* p2_pick){
-    int pchoices[] = {0, 0};
-    pchoices[0] = input_id(p1_pick);
-    pchoices[1] = input_id(p2_pick);
-
-    int res = 0;
-    if((res = check_choices(pchoices, 2)) > -1){
-        switch(res){
-        case 0: {
-            return RPS_P1_INVALID;
-            break;
-        }
-        case 1: {
-            return RPS_P2_INVALID;
-            break;
-        }
-        default: {
-            assert(FALSE);
-            return RPS_ERROR;
-        }
-        }
-    }
-
-    int result = (pchoices[1]-pchoices[0] + NUM_CHOICES) % NUM_CHOICES;
+RPS_Result rps_match(const RPSItem* p1_pick, const RPSItem* p2_pick){
+    assert(p1_pick);
+    assert(p2_pick);
+    int result = (p1_pick->id - p2_pick->id + NUM_ITEMS) % NUM_ITEMS;
     switch (result) {
     case 0: return RPS_TIE;
     case 1: return RPS_P1_WINS;
@@ -89,4 +67,28 @@ RPS_Result rps_match(const char* p1_pick, const char* p2_pick){
     }
 
 }
+
+/*located on the heap!!!! use free!! */
+RPSItem* rps_item_by_name(const char* name){
+    for(const RPSItem* i = items; i < items + NUM_ITEMS; ++i){
+        // (*items).name same as item->name if it points to a struct or a class in C++
+        if(rps_strcmp(i->name, name)==0){
+            // copy item to some storage on the heap:
+            // 1. Put memory aside for the new item. Rig,ht now it's not even initialized,
+            // there are random bytes in it.
+            RPSItem* new_item = malloc(sizeof(RPSItem));
+
+            // 2. copies the pointer to the stack to a pointer to memory
+            if(new_item != 0){
+                memcpy(new_item, i, sizeof(RPSItem));
+
+                // 3. return the newly copied item on the heap.
+                return new_item;
+            }
+        }
+
+    }
+    return 0;
+}
+
 
