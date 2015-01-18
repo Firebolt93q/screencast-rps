@@ -1,7 +1,6 @@
 #include <assert.h>
 #include "rps.h"
 #include <string.h>
-#include <stdlib.h>
 
 /*
  rock = 0, paper = 1, scissors =2
@@ -68,23 +67,19 @@ RPS_Result rps_match(const RPSItem* p1_pick, const RPSItem* p2_pick){
 
 }
 
-/*located on the heap!!!! use free!! */
-RPSItem* rps_item_by_name(const char* name){
+RPSItem* rps_item_by_name(const char* name, RPSItem* destination){
     for(const RPSItem* i = items; i < items + NUM_ITEMS; ++i){
         // (*items).name same as item->name if it points to a struct or a class in C++
         if(rps_strcmp(i->name, name)==0){
             // copy item to some storage on the heap:
             // 1. Put memory aside for the new item. Rig,ht now it's not even initialized,
             // there are random bytes in it.
-            RPSItem* new_item = malloc(sizeof(RPSItem));
 
             // 2. copies the pointer to the stack to a pointer to memory
-            if(new_item != 0){
-                memcpy(new_item, i, sizeof(RPSItem));
+            memcpy(destination, i, sizeof(RPSItem));
 
                 // 3. return the newly copied item on the heap.
-                return new_item;
-            }
+            return destination;
         }
 
     }
