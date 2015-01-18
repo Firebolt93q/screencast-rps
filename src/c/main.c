@@ -38,10 +38,12 @@ int main(int argc, char* args[]){
         break;
     }
     case RPS_P1_WINS:{
+        p2->say_you_lost(stderr);
         printf("PLAYER 1 WINS\n");
         break;
     }
     case RPS_P2_WINS:{
+        p1->say_you_lost(stderr);
         printf("PLAYER 2 WINS\n");
         break;
     }case RPS_ERROR:{

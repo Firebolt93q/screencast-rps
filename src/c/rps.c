@@ -5,11 +5,22 @@
 /*
  rock = 0, paper = 1, scissors =2
  */
+void rps_rock_lost(FILE* stream){
+    fprintf(stream, "Rock says: I am blind!!!\n");
+}
+
+void rps_paper_lost(FILE* stream){
+    fprintf(stream, "Paper says: I feel divided!!!\n");
+}
+
+void rps_scissors_lost(FILE* stream){
+    fprintf(stream, "Scissors says: I am crushed!!!\n");
+}
 
 const RPSItem items[] = {
-    {.name = "rock", .id = 0},
-    {.name = "paper", .id = 1},
-    {.name = "scissors", .id = 2}
+    {.name = "rock", .id = 0, .say_you_lost = rps_rock_lost},
+    {.name = "paper", .id = 1, .say_you_lost = rps_paper_lost},
+    {.name = "scissors", .id = 2, .say_you_lost = rps_scissors_lost}
 };
 
 const int TRUE = 0;
