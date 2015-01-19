@@ -7,12 +7,18 @@ typedef enum{
              RPS_ERROR
             } RPS_Result;
 
-typedef struct{
+// members of struct are public by default :D
+// constants need an initialization
+struct RPSItem{
     const char* name;
     const int id;
     void (*say_you_lost)(FILE*);
 
-} RPSItem;
+    // method overloading-CANNOT DO THIS IN C
+    RPSItem();
+    RPSItem(const char* name, const int id, void(*say_you_lost)(FILE*));
+
+};
 
 RPSItem* rps_item_by_name(const char* name, RPSItem* destination);
 

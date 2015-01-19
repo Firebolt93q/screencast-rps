@@ -18,10 +18,28 @@ void rps_scissors_lost(FILE* stream){
 }
 
 const RPSItem items[] = {
-    {.name = "rock", .id = 0, .say_you_lost = rps_rock_lost},
-    {.name = "paper", .id = 1, .say_you_lost = rps_paper_lost},
-    {.name = "scissors", .id = 2, .say_you_lost = rps_scissors_lost}
+    RPSItem("rock", 0, rps_rock_lost),
+    RPSItem("paper", 1, rps_paper_lost),
+    RPSItem("scissors", 2, rps_scissors_lost)
 };
+
+RPSItem::RPSItem()
+    :name(0), id(0), say_you_lost(0) // initialize constants here...
+{
+    // cannot initialize constants in here...
+    // there is a time before the constructor that will deal with
+    // initializing member variables
+
+}
+
+RPSItem::RPSItem(const char *name, const int id, void(*say_you_lost)(FILE*))
+    :name(name), id(id), say_you_lost(say_you_lost) // initialize constants here...
+{
+    // cannot initialize constants in here...
+    // there is a time before the constructor that will deal with
+    // initializing member vari-ables
+
+}
 
 const int TRUE = 0;
 const int FALSE = 1;
@@ -42,7 +60,7 @@ int rps_strcmp(const char* a, const char* b){
     // are equal characters. But it is still possible
     // one is longer than the other
     if(*a == 0 && *b == 0){
-        return 0;
+        return TRUE;
     }
 
     return -1;
