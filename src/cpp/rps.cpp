@@ -1,5 +1,5 @@
 #include <assert.h>
-#include "rps.h"
+#include "rps.hpp"
 #include <string.h>
 
 /*

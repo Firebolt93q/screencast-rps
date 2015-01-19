@@ -2,7 +2,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <assert.h>
-#include "rps.h"
+#include "rps.hpp"
 #include <stdlib.h>
 
 int main(int argc, char* args[]){
