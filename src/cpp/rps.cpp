@@ -5,41 +5,15 @@
 /*
  rock = 0, paper = 1, scissors =2
  */
-void rps_rock_lost(FILE* stream){
-    fprintf(stream, "Rock says: I am blind!!!\n");
-}
 
-void rps_paper_lost(FILE* stream){
-    fprintf(stream, "Paper says: I feel divided!!!\n");
-}
+Rock rock;
+Paper paper;
+Scissors scissors;
 
-void rps_scissors_lost(FILE* stream){
-    fprintf(stream, "Scissors says: I am crushed!!!\n");
-}
+const RPSItem* items[] = {
+    &rock, &paper, &scissors
 
-const RPSItem items[] = {
-    RPSItem("rock", 0, rps_rock_lost),
-    RPSItem("paper", 1, rps_paper_lost),
-    RPSItem("scissors", 2, rps_scissors_lost)
 };
-
-RPSItem::RPSItem()
-    :name(0), id(0), say_you_lost(0) // initialize constants here...
-{
-    // cannot initialize constants in here...
-    // there is a time before the constructor that will deal with
-    // initializing member variables
-
-}
-
-RPSItem::RPSItem(const char *name, const int id, void(*say_you_lost)(FILE*))
-    :name(name), id(id), say_you_lost(say_you_lost) // initialize constants here...
-{
-    // cannot initialize constants in here...
-    // there is a time before the constructor that will deal with
-    // initializing member vari-ables
-
-}
 
 const int TRUE = 0;
 const int FALSE = 1;
@@ -96,23 +70,75 @@ RPS_Result rps_match(const RPSItem* p1_pick, const RPSItem* p2_pick){
 
 }
 
-RPSItem* rps_item_by_name(const char* name, RPSItem* destination){
-    for(const RPSItem* i = items; i < items + NUM_ITEMS; ++i){
-        // (*items).name same as item->name if it points to a struct or a class in C++
-        if(rps_strcmp(i->name, name)==0){
-            // copy item to some storage on the heap:
-            // 1. Put memory aside for the new item. Rig,ht now it's not even initialized,
-            // there are random bytes in it.
-
-            // 2. copies the pointer to the stack to a pointer to memory
-            memcpy(destination, i, sizeof(RPSItem));
-
-                // 3. return the newly copied item on the heap.
-            return destination;
+const RPSItem* rps_item_by_name(const char* name){
+    for(const RPSItem **item = items; item < items + NUM_ITEMS; ++item){
+        if(rps_strcmp((*item)->name, name) == 0){
+            return (*item);
         }
-
     }
     return 0;
 }
+
+RPSItem::RPSItem()
+    : name(0), id(0)
+{
+
+
+}
+
+RPSItem::RPSItem(const char * name, const int id)
+    :name(name), id(id)
+{
+
+}
+
+
+Rock::Rock()
+    :RPSItem("rock",0)
+{
+}
+
+
+void Rock::say_you_lost(FILE *stream) const
+{
+    fprintf(stream, "Rock says: I am blind!!!\n");
+
+}
+
+
+Paper::Paper()
+    :RPSItem("paper",1)
+{
+}
+
+
+void Paper::say_you_lost(FILE *stream) const
+{
+    fprintf(stream, "Paper says: I am divided!!!\n");
+
+}
+
+
+Scissors::Scissors()
+    :RPSItem("Scissors",2)
+{
+}
+
+
+void Scissors::say_you_lost(FILE *stream) const
+{
+    fprintf(stream, "Scissors says: I am crushed!!!\n");
+
+}
+
+
+
+
+
+
+
+
+
+
 
 

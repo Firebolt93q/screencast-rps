@@ -11,18 +11,16 @@ int main(int argc, char* args[]){
         return 1;
     }
 
-    RPSItem p1Loc, p2Loc;
-
     // &p2 = address of operator, memory address, of memory location of player 2
     // returns a pointer to that particular object
-    RPSItem* p1 = rps_item_by_name(args[1], &p1Loc);
+    const RPSItem* p1 = rps_item_by_name(args[1]);
 
     if(p1 == 0){
         fprintf(stderr, "P1 INVALID\n");
         return 1;
     }
 
-    RPSItem* p2 = rps_item_by_name(args[2], &p2Loc);
+    const RPSItem* p2 = rps_item_by_name(args[2]);
 
     if(p2 == 0){
         fprintf(stderr, "P2 INVALID\n");
@@ -32,7 +30,7 @@ int main(int argc, char* args[]){
     int returnValue = 0;
 
     // prints result of the game engine
-    switch (rps_match(&p1Loc, &p2Loc)) {
+    switch (rps_match(p1, p2)) {
     case RPS_TIE:{
         printf("WE TIED\n");
         break;
