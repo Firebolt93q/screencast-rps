@@ -9,7 +9,16 @@ typedef enum{
 
 // members of struct are public by default :D
 // constants need an initialization
-struct RPSItem{
+class RPSItem{
+    // CLASS members go up here and must be declared static and constant, and must be initialized
+    // static const int rps_class_member = 5;
+
+public:
+
+    // example of static pointer that can access constructors
+    // static RPSItem* creator();
+
+    // These are declarations of INSTANCE members, and NOT CLASS members
     const char* name;
     const int id;
 
@@ -26,26 +35,30 @@ struct RPSItem{
     virtual void say_you_lost(FILE*) const = 0;
 
     // method overloading-CANNOT DO THIS IN C
+protected:
     RPSItem();
     RPSItem(const char* name, const int id);
 
 };
 
-struct Rock : RPSItem{
+class Rock : public RPSItem{
+    public:
     Rock();
     virtual void say_you_lost(FILE*) const;
 
 
 };
 
-struct Paper : RPSItem{
+class Paper : public RPSItem{
+    public:
     Paper();
     virtual void say_you_lost(FILE*) const;
 
 
 };
 
-struct Scissors : RPSItem{
+class Scissors : public RPSItem{
+    public:
     Scissors();
     virtual void say_you_lost(FILE*) const;
 

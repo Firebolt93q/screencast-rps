@@ -10,6 +10,7 @@ Rock rock;
 Paper paper;
 Scissors scissors;
 
+
 const RPSItem* items[] = {
     &rock, &paper, &scissors
 
